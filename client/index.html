@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Simple Demo Site Statistics</title>
+
+    <link rel="stylesheet" href="./assets/dist/css/bootstrap.min.1.css" />
+    <link rel="stylesheet" href="./css/customCss.css" />
+
+</head>
+
+<body>
+
+    <div class="container">
+        <div class="card text-black m-3">
+            <div class="card-header bg-info text-white">آمار سایت</div>
+            <div class="card-body">
+                <table class="table" id="Sites">
+                    <tr>
+                        <td>سایت</th>
+                        <td>نام فارسی</th>
+                        <td>افراد فعلی</th>
+                    </tr>
+                    <tr class="siteRow">
+                        <td class="siteName">Barnamenevisan.info</td>
+                        <td>آموزشگاه برنامه نویسان</td>
+                        <td class="count">0</td>
+                    </tr>
+                    <tr class="siteRow">
+                        <td class="siteName">Toplearn.com</td>
+                        <td>تاپ لرن</td>
+                        <td class="count">0</td>
+                    </tr>
+                    <tr class="siteRow">
+                        <td class="siteName">themeshop.ir</td>
+                        <td>تم شاپ</td>
+                        <td class="count">0</td>
+                    </tr>
+                    <tr class="siteRow">
+                        <td class="siteName">Barnamenevis.ir</td>
+                        <td>فروشگاه برنامه نویس</td>
+                        <td class="count">0</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+        crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+        crossorigin="anonymous"></script>
+    <script>
+        $(".siteRow").each(function () {
+            var siteName = $(this).find("td.siteName");
+            var count = $(this).find("td.count");
+            debugger;
+            var socket = new WebSocket("ws://localhost:7777");
+
+            socket.onopen = function () {
+                socket.send(siteName.text());
+                socket.onmessage = function (result) {
+                    var message = JSON.parse(result.data);
+                    console.log(message);
+
+                    count.text(message.Count)
+                };
+            };
+        });
+
+    </script>
+</body>
+
+</html>
